@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "wenjuan-fe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -67,7 +67,9 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.3",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2"
   },
   "config": {
     "commitizen": {

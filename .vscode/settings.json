@@ -2,5 +2,8 @@
   "editor.codeActionsOnSave": {
     // 告诉vscode保存时自动修复
     "source.fixAll.eslint": true
-  }
+  },
+  "cSpell.words": [
+    "wenjuan"
+  ]
 }
