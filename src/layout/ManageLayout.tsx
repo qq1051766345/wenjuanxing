@@ -6,7 +6,7 @@ const ManageLayout: FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.left}>
-        <p>MainLayout Left</p>
+        <p>manageLayout Left</p>
         <button>创建问卷</button>
         <a>我的问卷</a>
         <a>星标问卷</a>
