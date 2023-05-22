@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import styles from '../common.module.scss';
 import QuestionCard from '../../../components/QuestionCard';
-import { useSearchParams } from 'react-router-dom';
 import { useTitle } from 'ahooks';
-import { Typography } from 'antd';
+import { Typography, Empty } from 'antd';
 
 const { Title } = Typography;
 
@@ -12,7 +11,7 @@ const rawQuestionsList = [
     _id: 'q1', //和mongoDb中的id一致
     title: '问卷1',
     isPublished: true,
-    isStar: false,
+    isStar: true,
     answerCount: 5,
     createAt: '2020-01-01',
   },
@@ -28,7 +27,7 @@ const rawQuestionsList = [
     _id: 'q3',
     title: '问卷3',
     isPublished: true,
-    isStar: false,
+    isStar: true,
     answerCount: 5,
     createAt: '2020-01-01',
   },
@@ -36,7 +35,7 @@ const rawQuestionsList = [
     _id: 'q4',
     title: '问卷4',
     isPublished: false,
-    isStar: false,
+    isStar: true,
     answerCount: 5,
     createAt: '2020-01-01',
   },
@@ -50,33 +49,30 @@ const rawQuestionsList = [
   },
 ];
 
-const List: FC = () => {
-  const [searchParam] = useSearchParams();
+const Star: FC = () => {
   const [list, setList] = useState(rawQuestionsList);
-  useTitle('小浩问卷-我的问卷');
-  useEffect(() => {
-    console.log('keyword', searchParam.get('keyword'));
-  });
-
+  useTitle('小浩问卷-星标问卷');
   return (
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <Title level={3}>我的问卷</Title>
+          <Title level={3}>星标问卷</Title>
         </div>
         <div className={styles.right}>搜索</div>
       </div>
+
       <div className={styles.content}>
-        {/* 问卷列表 */}
-        {list &&
+        {list.length === 0 ? <Empty description="暂无数据"></Empty> : null}
+        {/* 星标问卷列表 */}
+        {list.length > 0 &&
           list.map(item => {
             const { _id } = item;
             return <QuestionCard key={_id} {...item}></QuestionCard>;
           })}
       </div>
-      <div className={styles.footer}>loadMore 上滑加载更多</div>
+      <div className={styles.footer}>分页</div>
     </>
   );
 };
 
-export default List;
+export default Star;

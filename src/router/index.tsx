@@ -9,7 +9,7 @@ import Register from '../pages/Register';
 import NotFound from '../pages/404';
 import List from '../pages/manage/List';
 import Trash from '../pages/manage/Trash';
-import Star from '../pages/question/Star';
+import Star from '../pages/manage/Star';
 import Edit from '../pages/question/Edit';
 import Stat from '../pages/question/Stat';
 import Login from '../pages/Login';
@@ -72,3 +72,10 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+
+// --------------------
+// 常用的路由常量
+export const LOGIN_PATHNAME = '/login';
+export const REGISTER_PATHNAME = '/register';
+export const HOME_PATHNAME = '/';
+export const MANAGE_INDEX_PATHNAME = '/manage/list';

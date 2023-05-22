@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import styles from './MainLayout.module.scss';
 import { Layout } from 'antd';
 import Logo from '../components/Logo';
+import UserInfo from '../components/UserInfo';
 const { Header, Footer, Content } = Layout;
 
 const MainLayout: FC = () => {
@@ -12,7 +13,9 @@ const MainLayout: FC = () => {
         <div className={styles.left}>
           <Logo />
         </div>
-        <div className={styles.right}>登陆/用户信息</div>
+        <div className={styles.right}>
+          <UserInfo></UserInfo>
+        </div>
       </Header>
       <Content className={styles.main}>
         <Outlet />
