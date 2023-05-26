@@ -3,6 +3,7 @@ import styles from '../common.module.scss';
 import QuestionCard from '../../../components/QuestionCard';
 import { useTitle } from 'ahooks';
 import { Typography, Empty } from 'antd';
+import ListSearch from '../../../components/ListSearch';
 
 const { Title } = Typography;
 
@@ -58,7 +59,9 @@ const Star: FC = () => {
         <div className={styles.left}>
           <Title level={3}>星标问卷</Title>
         </div>
-        <div className={styles.right}>搜索</div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
 
       <div className={styles.content}>
