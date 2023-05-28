@@ -1,8 +1,8 @@
 import axios, { ResDataType, ResType } from './ajax';
 type search = {
   keyword: string;
-  // page
-  // pageSize
+  page: number; //页数
+  pageSize: number; //每页条数
   isStar: boolean;
   isDeleted: boolean;
   inPublished: boolean;

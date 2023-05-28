@@ -6,6 +6,7 @@ import { Typography, Empty, Table, Tag, Space, Button, Spin } from 'antd';
 import ListSearch from '../../../components/ListSearch';
 import { type } from 'os';
 import useLoadQuestionListData from '../../../hooks/useLoadQuestionListData';
+import ListPage from '../../../components/ListPage';
 const { Column, ColumnGroup } = Table;
 const { Title } = Typography;
 
@@ -79,6 +80,15 @@ const Trash: FC = () => {
               <Column title="创建时间" dataIndex="createdAt" key="createdAt" />
             </Table>
           </>
+        )}
+      </div>
+
+      <div style={{ textAlign: 'center' }}>
+        {/* 分页 */}
+        {!loading && (
+          <div className={styles.footer}>
+            <ListPage total={total} />
+          </div>
         )}
       </div>
     </>

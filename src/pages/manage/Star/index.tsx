@@ -1,14 +1,16 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from '../common.module.scss';
 import QuestionCard from '../../../components/QuestionCard';
 import { useTitle } from 'ahooks';
 import { Typography, Empty, Spin } from 'antd';
 import ListSearch from '../../../components/ListSearch';
 import useLoadQuestionListData from '../../../hooks/useLoadQuestionListData';
+import ListPage from '../../../components/ListPage';
 
 const { Title } = Typography;
 
 const Star: FC = () => {
+  useTitle('小浩问卷-星标问卷');
   const { data, loading, error } = useLoadQuestionListData({ isStar: true });
   const { list = [], total = 0 } = data || {};
   return (
@@ -37,7 +39,12 @@ const Star: FC = () => {
             return <QuestionCard key={_id} {...item}></QuestionCard>;
           })}
       </div>
-      <div className={styles.footer}>分页</div>
+      {/* 分页 */}
+      {!loading && (
+        <div className={styles.footer}>
+          <ListPage total={total} />
+        </div>
+      )}
     </>
   );
 };

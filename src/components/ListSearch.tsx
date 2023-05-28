@@ -13,7 +13,7 @@ const ListSearch: FC = () => {
     // 跳转页面，增加url参数
     nav({
       pathname,
-      search: `${LIST_SEARCH_PARAM_KEY}=${value}`,
+      search: `${LIST_SEARCH_PARAM_KEY}=${value}`, //去掉了page和pageSize
     });
   };
 
