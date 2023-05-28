@@ -20,9 +20,9 @@ const ListSearch: FC = () => {
   // 获取url参数，并设置到input中value中
   const [searchParam] = useSearchParams();
   useEffect(() => {
-    const newVal = searchParam.get(LIST_SEARCH_PARAM_KEY) || '';
+    /*  const newVal = searchParam.get(LIST_SEARCH_PARAM_KEY) || '';
     console.log(newVal, 1111);
-    setValue(newVal);
+    setValue(newVal); */
   }, [searchParam]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

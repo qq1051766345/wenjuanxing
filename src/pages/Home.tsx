@@ -1,13 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Typography } from 'antd';
 import { MANAGE_INDEX_PATHNAME } from '../router';
 import styles from './Home.module.scss';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 const Home: FC = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    fetch('/api/test')
+      .then(res => res.json())
+      .then(data => console.log(data));
+  });
   // const login = () => {
   //   // navigate('/login');
   //   navigate({

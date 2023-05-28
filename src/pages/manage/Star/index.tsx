@@ -2,57 +2,15 @@ import React, { FC, useEffect, useState } from 'react';
 import styles from '../common.module.scss';
 import QuestionCard from '../../../components/QuestionCard';
 import { useTitle } from 'ahooks';
-import { Typography, Empty } from 'antd';
+import { Typography, Empty, Spin } from 'antd';
 import ListSearch from '../../../components/ListSearch';
+import useLoadQuestionListData from '../../../hooks/useLoadQuestionListData';
 
 const { Title } = Typography;
 
-const rawQuestionsList = [
-  {
-    _id: 'q1', //和mongoDb中的id一致
-    title: '问卷1',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q4',
-    title: '问卷4',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q5',
-    title: '问卷5',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-];
-
 const Star: FC = () => {
-  const [list, setList] = useState(rawQuestionsList);
-  useTitle('小浩问卷-星标问卷');
+  const { data, loading, error } = useLoadQuestionListData({ isStar: true });
+  const { list = [], total = 0 } = data || {};
   return (
     <>
       <div className={styles.header}>
@@ -63,12 +21,18 @@ const Star: FC = () => {
           <ListSearch />
         </div>
       </div>
-
+      {loading && (
+        <>
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        </>
+      )}
       <div className={styles.content}>
-        {list.length === 0 ? <Empty description="暂无数据"></Empty> : null}
+        {list.length === 0 && !loading ? <Empty description="暂无数据"></Empty> : null}
         {/* 星标问卷列表 */}
         {list.length > 0 &&
-          list.map(item => {
+          list.map((item: any) => {
             const { _id } = item;
             return <QuestionCard key={_id} {...item}></QuestionCard>;
           })}

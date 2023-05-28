@@ -1,64 +1,25 @@
 import React, { FC, useEffect, useState } from 'react';
 import styles from '../common.module.scss';
 import QuestionCard from '../../../components/QuestionCard';
-import { useSearchParams } from 'react-router-dom';
-import { useTitle } from 'ahooks';
-import { Typography } from 'antd';
+import { useTitle, useRequest } from 'ahooks';
+import { Spin, Typography } from 'antd';
 import ListSearch from '../../../components/ListSearch';
+import useLoadQuestionListData from '../../../hooks/useLoadQuestionListData';
 
 const { Title } = Typography;
-
-const rawQuestionsList = [
-  {
-    _id: 'q1', //和mongoDb中的id一致
-    title: '问卷1',
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q4',
-    title: '问卷4',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-  {
-    _id: 'q5',
-    title: '问卷5',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createAt: '2020-01-01',
-  },
-];
-
+type listData = {
+  _id: string;
+  title: string;
+  isPublished: boolean;
+  isStar: boolean;
+  answerCount: number;
+  createAt: string;
+  idDeleted: boolean;
+};
 const List: FC = () => {
-  const [searchParam] = useSearchParams();
-  const [list, setList] = useState(rawQuestionsList);
   useTitle('小浩问卷-我的问卷');
-  useEffect(() => {
-    console.log('keyword', searchParam.get('keyword'));
-  });
-
+  const { data = {}, loading = false } = useLoadQuestionListData();
+  const { list, total = 0 } = data;
   return (
     <>
       <div className={styles.header}>
@@ -69,10 +30,17 @@ const List: FC = () => {
           <ListSearch />
         </div>
       </div>
+      {loading && (
+        <>
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        </>
+      )}
       <div className={styles.content}>
         {/* 问卷列表 */}
         {list &&
-          list.map(item => {
+          list.map((item: listData) => {
             const { _id } = item;
             return <QuestionCard key={_id} {...item}></QuestionCard>;
           })}
