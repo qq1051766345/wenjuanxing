@@ -1,15 +1,32 @@
 import React, { FC } from 'react';
-import { Button, Form, Input, Space, Typography } from 'antd';
+import { Button, Form, Input, Space, Typography, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import styles from './Register.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LOGIN_PATHNAME } from '../router';
+import { useRequest } from 'ahooks';
+import { registerService } from '../services/user';
 
 const { Title } = Typography;
 const Register: FC = () => {
+  const nav = useNavigate();
   const onFinish = (values: any) => {
-    console.log(values);
+    register(values);
   };
+
+  const { run: register, loading: registerLoading } = useRequest(
+    async values => {
+      const { username, password, nickname } = values;
+      await registerService(username, password, nickname);
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('注册成功');
+        nav(LOGIN_PATHNAME);
+      },
+    }
+  );
 
   return (
     <div className={styles.container}>
@@ -77,7 +94,7 @@ const Register: FC = () => {
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
             <Space>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={register} loading={registerLoading}>
                 注册
               </Button>
               <Link to={LOGIN_PATHNAME}>已有账户,登陆</Link>

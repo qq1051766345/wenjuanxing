@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './QuestionCard.module.scss';
 import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from 'antd';
 import {
@@ -10,6 +10,8 @@ import {
   StarOutlined,
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRequest } from 'ahooks';
+import { duplicateQuestionService, editQuestionService } from '../services/question';
 
 type QuestionCardProps = {
   _id: string;
@@ -24,16 +26,63 @@ const { confirm } = Modal;
 
 const QuestionCard: FC<QuestionCardProps> = props => {
   const { _id, title, isStar, isPublished, createAt, answerCount } = props;
+  const [isDeleted, setIsDeleted] = useState(false); //是否已经删除
+  //修改标星
+  const [isStarState, setIsStarState] = useState(isStar);
   const nav = useNavigate();
-  const copy = () => {
-    message.info(123);
-  };
+
+  // 修改问卷
+  const {
+    run: editStar,
+    error,
+    loading: changeStarLoading,
+  } = useRequest(
+    async () => {
+      await editQuestionService(_id, { isStar: !isStarState });
+    },
+    {
+      manual: true,
+      onSuccess(res) {
+        setIsStarState(!isStarState); //更新state
+        message.success('已标星');
+      },
+    }
+  );
+
+  //复制问卷
+  const { loading: duplicateLoading, run: duplicateQuestionCard } = useRequest(
+    async () => await duplicateQuestionService(_id),
+    {
+      manual: true,
+      onSuccess(res: any) {
+        message.success('复制成功');
+        nav(`/question/edit/${res.id}`);
+      },
+    }
+  );
+
+  //删除问卷
+  const { loading: deleteLoading, run: deleteService } = useRequest(
+    async () => await editQuestionService(_id, { isDeleted: true }),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功');
+        setIsDeleted(true);
+      },
+    }
+  );
+
+  // 已经删除的卡片不要再渲染卡片了
+  if (isDeleted) {
+    return null;
+  }
 
   const deleteQuestionCard = () => {
     confirm({
       title: '确定删除该问卷？',
       icon: <ExclamationCircleFilled />,
-      onOk: () => console.log(123),
+      onOk: () => deleteService(),
     });
   };
 
@@ -100,11 +149,23 @@ const QuestionCard: FC<QuestionCardProps> = props => {
                 type="text"
                 size="small"
                 style={isStar ? { color: '#1677ff' } : {}}
+                onClick={editStar}
+                disabled={changeStarLoading}
               >
-                {isStar ? '取消标星' : '标星'}
+                {isStarState ? '取消标星' : '标星'}
               </Button>
-              <Popconfirm title="确定复制该问卷？" okText="Yes" cancelText="No" onConfirm={copy}>
-                <Button icon={<CopyOutlined />} type="text" size="small">
+              <Popconfirm
+                title="确定复制该问卷？"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={duplicateQuestionCard}
+              >
+                <Button
+                  icon={<CopyOutlined />}
+                  type="text"
+                  size="small"
+                  disabled={duplicateLoading}
+                >
                   复制
                 </Button>
               </Popconfirm>
@@ -113,6 +174,7 @@ const QuestionCard: FC<QuestionCardProps> = props => {
                 type="text"
                 size="small"
                 onClick={deleteQuestionCard}
+                disabled={deleteLoading}
               >
                 删除
               </Button>

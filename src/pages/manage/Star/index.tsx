@@ -40,7 +40,7 @@ const Star: FC = () => {
           })}
       </div>
       {/* 分页 */}
-      {!loading && (
+      {list.length > 0 && (
         <div className={styles.footer}>
           <ListPage total={total} />
         </div>

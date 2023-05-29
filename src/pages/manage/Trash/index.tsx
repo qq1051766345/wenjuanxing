@@ -1,20 +1,53 @@
 import React, { FC, useEffect, useState } from 'react';
 import styles from '../common.module.scss';
-import QuestionCard from '../../../components/QuestionCard';
-import { useTitle } from 'ahooks';
-import { Typography, Empty, Table, Tag, Space, Button, Spin } from 'antd';
+import { useRequest, useTitle } from 'ahooks';
+import { Typography, Empty, Table, Tag, Space, Button, Spin, message } from 'antd';
 import ListSearch from '../../../components/ListSearch';
-import { type } from 'os';
 import useLoadQuestionListData from '../../../hooks/useLoadQuestionListData';
 import ListPage from '../../../components/ListPage';
-const { Column, ColumnGroup } = Table;
+import { deleteQuestionService, editQuestionService } from '../../../services/question';
+const { Column } = Table;
 const { Title } = Typography;
 
 const Trash: FC = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const { data, loading, error } = useLoadQuestionListData({ isDeleted: true });
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const { data, loading, error, refresh } = useLoadQuestionListData({ isDeleted: true });
   const { list = [], total = 0 } = data || {};
   useTitle('小浩问卷-回收站');
+
+  // 恢复问卷
+  const {
+    run: restore,
+    loading: restoreLoading,
+    refresh: deleteRefresh,
+  } = useRequest(
+    async () => {
+      for await (const id of selectedRowKeys) {
+        await editQuestionService(String(id), { isDeleted: false });
+      }
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('恢复成功');
+        // 手动刷新列表
+        refresh();
+      },
+      debounceWait: 500, //防抖
+    }
+  );
+
+  // 彻底删除
+  const { run: completeDelete, loading: deleteLoading } = useRequest(
+    async () => deleteQuestionService(selectedRowKeys),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功');
+        deleteRefresh();
+      },
+    }
+  );
   return (
     <>
       <div className={styles.header}>
@@ -40,10 +73,19 @@ const Trash: FC = () => {
           <>
             <div style={{ marginBottom: '20px' }}>
               <Space>
-                <Button type="primary" disabled={!selectedRowKeys.length}>
+                <Button
+                  type="primary"
+                  disabled={!selectedRowKeys.length || restoreLoading}
+                  onClick={restore}
+                >
                   恢复
                 </Button>
-                <Button danger type="primary" disabled={!selectedRowKeys.length}>
+                <Button
+                  danger
+                  type="primary"
+                  disabled={!selectedRowKeys.length || deleteLoading}
+                  onClick={completeDelete}
+                >
                   彻底删除
                 </Button>
               </Space>
@@ -54,7 +96,7 @@ const Trash: FC = () => {
               rowKey={q => q._id}
               rowSelection={{
                 type: 'checkbox',
-                onChange: newSelectedRowKeys => {
+                onChange: (newSelectedRowKeys: any) => {
                   setSelectedRowKeys(newSelectedRowKeys);
                 },
               }}
@@ -85,7 +127,7 @@ const Trash: FC = () => {
 
       <div style={{ textAlign: 'center' }}>
         {/* 分页 */}
-        {!loading && (
+        {list.length > 0 && (
           <div className={styles.footer}>
             <ListPage total={total} />
           </div>

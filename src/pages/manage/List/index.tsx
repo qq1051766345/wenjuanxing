@@ -30,7 +30,7 @@ const List: FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 全部重制
+    // 当搜索的时候所有状态全部重置
     setStarted(false);
     setList([]);
     setPage(1);
@@ -92,12 +92,12 @@ const List: FC = () => {
     return <span>上滑加载更多</span>;
   }, [stared, loading, total, haveMoreData]);
 
-  // 当页面触发滚动的时候，要尝试触发加载
   useEffect(() => {
     //开始的时候会触发一次，并且在query参数变化的时候触发，即搜索的时候触发
     tryLoadMore();
   }, [searchParams]);
 
+  // 当页面触发滚动的时候，要尝试触发加载
   useEffect(() => {
     if (haveMoreData) {
       window.addEventListener('scroll', tryLoadMore);
@@ -123,7 +123,6 @@ const List: FC = () => {
         {list.length > 0 &&
           list.map((item: listData) => {
             const { _id } = item;
-            console.log(_id);
             return <QuestionCard key={_id} {...item}></QuestionCard>;
           })}
       </div>

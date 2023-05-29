@@ -28,3 +28,24 @@ export async function getAllQuestionService(opt: Partial<search> = {}): Promise<
   const data = await axios.get(url, { params: opt });
   return data;
 }
+
+// 修改问卷
+export async function editQuestionService(id: string, opt: Partial<search>): Promise<ResDataType> {
+  const url = `/api/question/${id}`;
+  const data = (await axios.patch(url, opt)) as ResDataType;
+  return data;
+}
+
+// 复制问卷
+export async function duplicateQuestionService(id: string): Promise<ResDataType> {
+  const url = `/api/question/duplicate/${id}`;
+  const data = (await axios.post(url)) as ResDataType;
+  return data;
+}
+
+// 批量彻底问卷
+export async function deleteQuestionService(ids: string[]): Promise<ResDataType> {
+  const url = `/api/question/delete`;
+  const data = (await axios.delete(url, { data: ids })) as ResDataType;
+  return data;
+}

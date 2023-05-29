@@ -12,7 +12,7 @@ function useLoadQuestionListData(opt: Partial<OptionType> = {}) {
   const { isStar = false, isDeleted = false } = opt;
   const [searchParam] = useSearchParams();
 
-  const { data, loading, error } = useRequest(
+  const { data, loading, error, refresh } = useRequest(
     async () => {
       const keyword = searchParam.get(LIST_SEARCH_PARAM_KEY) || '';
       const page = Number(searchParam.get(LIST_PARAM_PAGE_KEY)) || 1;
@@ -29,6 +29,7 @@ function useLoadQuestionListData(opt: Partial<OptionType> = {}) {
     data,
     error,
     loading,
+    refresh,
   };
 }
 
