@@ -1,13 +1,16 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Checkbox, Form, Input, Space, Typography, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import styles from './Login.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router';
 import { useRequest } from 'ahooks';
-import { loginService } from '../services/user';
+import { getUserInfoService, loginService } from '../services/user';
 import Cookies from 'js-cookie';
 import { setToken } from '../utils/user-token';
+import useLoadUserData from '../hooks/useLoadUserData';
+import { useDispatch } from 'react-redux';
+import { loginReducer } from '../store/userReducer';
 
 const { Title } = Typography;
 const USERNAME_KEY = 'USERNAME';
@@ -32,6 +35,7 @@ const getUserInfoFromLocalStorage = () => {
 };
 
 const Login: FC = () => {
+  const [userInfo, setUserInfo] = useState({ username: '', nickname: '' });
   const [form] = Form.useForm(); //第三方hook
   const nav = useNavigate();
   useEffect(() => {
@@ -44,6 +48,24 @@ const Login: FC = () => {
     }
   }, []);
 
+  const dispatch = useDispatch();
+
+  // 加载用户信息
+  const loadUserInfo = () => {
+    getUserInfoService()
+      .then(res => {
+        // 导航到主页
+        nav(MANAGE_INDEX_PATHNAME);
+        setUserInfo(res as any);
+        dispatch(loginReducer(res as any));
+        message.success('登陆成功');
+      })
+      .catch(err => {
+        console.log(err);
+        message.error('获取信息失败');
+      });
+  };
+
   // 登陆
   const { run: login, loading: loginLoading } = useRequest(
     async values => {
@@ -54,11 +76,10 @@ const Login: FC = () => {
     {
       manual: true,
       onSuccess(res: any) {
-        message.success('登陆成功');
         const { token } = res;
         setToken(token);
-        // 导航到主页
-        nav(MANAGE_INDEX_PATHNAME);
+        // 获取用户信息
+        loadUserInfo();
       },
     }
   );

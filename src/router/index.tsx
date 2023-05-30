@@ -13,6 +13,7 @@ import Star from '../pages/manage/Star';
 import Edit from '../pages/question/Edit';
 import Stat from '../pages/question/Stat';
 import Login from '../pages/Login';
+import path from 'path';
 
 const router = createBrowserRouter([
   {
@@ -79,3 +80,19 @@ export const LOGIN_PATHNAME = '/login';
 export const REGISTER_PATHNAME = '/register';
 export const HOME_PATHNAME = '/';
 export const MANAGE_INDEX_PATHNAME = '/manage/list';
+
+export function isLoginOrRegister(pathname: string) {
+  if ([LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const isNoNeedUserInfo = (pathname: string) => {
+  if ([HOME_PATHNAME, LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
+    return true;
+  } else {
+    return false;
+  }
+};

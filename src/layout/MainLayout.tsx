@@ -1,12 +1,17 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import styles from './MainLayout.module.scss';
 import { Layout } from 'antd';
 import Logo from '../components/Logo';
 import UserInfo from '../components/UserInfo';
+import useGetUserInfo from '../hooks/useGetUserInfo';
+import useNavPage from '../hooks/useNavPage';
 const { Header, Footer, Content } = Layout;
 
 const MainLayout: FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  // 判断路由跳转
+  useNavPage();
   return (
     <Layout>
       <Header className={styles.header}>
