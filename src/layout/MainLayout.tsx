@@ -6,10 +6,12 @@ import Logo from '../components/Logo';
 import UserInfo from '../components/UserInfo';
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import useNavPage from '../hooks/useNavPage';
+import useLoadUserData from '../hooks/useLoadUserData';
 const { Header, Footer, Content } = Layout;
 
 const MainLayout: FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  // todo 开发时使用，后面删除
+  useLoadUserData();
   // 判断路由跳转
   useNavPage();
   return (

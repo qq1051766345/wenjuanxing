@@ -6,9 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router';
 import { useRequest } from 'ahooks';
 import { getUserInfoService, loginService } from '../services/user';
-import Cookies from 'js-cookie';
 import { setToken } from '../utils/user-token';
-import useLoadUserData from '../hooks/useLoadUserData';
 import { useDispatch } from 'react-redux';
 import { loginReducer } from '../store/userReducer';
 

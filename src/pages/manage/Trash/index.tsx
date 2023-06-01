@@ -16,11 +16,7 @@ const Trash: FC = () => {
   useTitle('小浩问卷-回收站');
 
   // 恢复问卷
-  const {
-    run: restore,
-    loading: restoreLoading,
-    refresh: deleteRefresh,
-  } = useRequest(
+  const { run: restore, loading: restoreLoading } = useRequest(
     async () => {
       for await (const id of selectedRowKeys) {
         await editQuestionService(String(id), { isDeleted: false });
@@ -44,7 +40,7 @@ const Trash: FC = () => {
       manual: true,
       onSuccess() {
         message.success('删除成功');
-        deleteRefresh();
+        refresh();
       },
     }
   );
