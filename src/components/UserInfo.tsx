@@ -1,11 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LOGIN_PATHNAME } from '../router';
-import { useRequest } from 'ahooks';
-import { getUserInfoService } from '../services/user';
 import { UserOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import { removeToken } from '../utils/user-token';
+import { removeToken, removeUserInfo } from '../utils/user-token';
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import { useDispatch } from 'react-redux';
 import { logoutReducer } from '../store/userReducer';
@@ -27,6 +25,7 @@ const UserInfo: FC = () => {
 
   function LogOut() {
     removeToken();
+    removeUserInfo();
     dispatch(logoutReducer());
     nav(LOGIN_PATHNAME);
     message.success('退出成功');

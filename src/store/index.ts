@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import useReducer, { UserStateType } from './userReducer';
-import componentReducer, { ComponentListType } from './componentsReducer';
+import componentReducer, { ComponentStateType } from './componentsReducer';
 
 export type StateType = {
   user: UserStateType;
-  componentList: ComponentListType;
+  components: ComponentStateType;
 };
 
 export default configureStore({
@@ -13,7 +13,7 @@ export default configureStore({
     // 用户信息
     user: useReducer,
     //组件列表
-    componentList: componentReducer,
+    components: componentReducer,
     //问卷信息 title desc
   },
 });

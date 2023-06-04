@@ -10,8 +10,6 @@ import useLoadUserData from '../hooks/useLoadUserData';
 const { Header, Footer, Content } = Layout;
 
 const MainLayout: FC = () => {
-  // todo 开发时使用，后面删除
-  useLoadUserData();
   // 判断路由跳转
   useNavPage();
   return (

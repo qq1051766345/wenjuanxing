@@ -6,20 +6,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router';
 import { useRequest } from 'ahooks';
 import { getUserInfoService, loginService } from '../services/user';
-import { setToken } from '../utils/user-token';
+import { setToken, setUserInfoToLocal } from '../utils/user-token';
 import { useDispatch } from 'react-redux';
 import { loginReducer } from '../store/userReducer';
 
 const { Title } = Typography;
 const USERNAME_KEY = 'USERNAME';
 const PASSWORD_KEY = 'PASSWORD';
-// 保存用户信息
+// 保存用户登陆信息
 const rememberUser = (username: string, password: string): void => {
   localStorage.setItem(USERNAME_KEY, username);
   localStorage.setItem(PASSWORD_KEY, password);
 };
 
-// 删除用户信息
+// 删除用户登陆信息
 const deleteUser = () => {
   localStorage.removeItem(USERNAME_KEY);
   localStorage.removeItem(PASSWORD_KEY);
@@ -55,6 +55,9 @@ const Login: FC = () => {
         // 导航到主页
         nav(MANAGE_INDEX_PATHNAME);
         setUserInfo(res as any);
+        console.log(res, 'userInfo');
+        // 存储到localStorage
+        setUserInfoToLocal(res);
         dispatch(loginReducer(res as any));
         message.success('登陆成功');
       })

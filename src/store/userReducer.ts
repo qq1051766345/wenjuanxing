@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import logo from '../components/Logo';
+import { getUserInfo } from '../utils/user-token';
 
 export type UserStateType = {
   name: string;
   nickname: string;
 };
 
+const { username, nickname } = getUserInfo();
+
 const INIT_STATE: UserStateType = {
-  name: '',
-  nickname: '',
+  name: username || '',
+  nickname: nickname || '',
 };
 
 export const userSlice = createSlice({
