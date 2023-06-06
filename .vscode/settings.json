@@ -10,11 +10,13 @@
     "antd",
     "Appstore",
     "craco",
+    "downarrow",
     "geekblue",
     "immer",
     "mockjs",
     "Popconfirm",
     "reduxjs",
+    "uparrow",
     "wenjuan"
   ]
 }

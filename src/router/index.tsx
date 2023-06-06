@@ -13,7 +13,6 @@ import Star from '../pages/manage/Star';
 import Edit from '../pages/question/Edit';
 import Stat from '../pages/question/Stat';
 import Login from '../pages/Login';
-import path from 'path';
 
 const router = createBrowserRouter([
   {

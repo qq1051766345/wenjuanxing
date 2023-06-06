@@ -5,10 +5,10 @@ import { Input, Typography } from 'antd';
 const { Paragraph } = Typography;
 
 const QuestionInput: FC<QuestionInputPropsType> = props => {
-  const { title = '输入框标题', placeholder = '请输入...' } = props;
+  const { text = '输入框标题', placeholder = '请输入....' } = props;
   return (
     <>
-      <Paragraph strong>{title}</Paragraph>
+      <Paragraph strong>{text}</Paragraph>
       <div>
         <Input placeholder={placeholder} onClick={e => e.defaultPrevented}></Input>
       </div>

@@ -32,7 +32,7 @@ const useLoadQuestionData = () => {
       selectedId = componentList[0].fe_id;
     }
 
-    dispatch(reset({ componentList, selectedId }));
+    dispatch(reset({ componentList, selectedId, copiedComponent: null }));
   }, [data]);
 
   // 判断id变化，执行加载ajax数据

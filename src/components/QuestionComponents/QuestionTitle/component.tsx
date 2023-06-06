@@ -5,8 +5,7 @@ import { Typography } from 'antd';
 const { Title } = Typography;
 
 const QuestionTitle: FC<QuestionTitlePropsType> = props => {
-  const { text = '一行标题', level = 1, inCenter } = props;
-
+  const { text = '一行标题', level = 1, isCenter } = props;
   const genFontSize = (level: number) => {
     if (level === 1) return '24px';
     if (level === 2) return '20px';
@@ -18,7 +17,7 @@ const QuestionTitle: FC<QuestionTitlePropsType> = props => {
     <Title
       level={level}
       style={{
-        textAlign: inCenter ? 'center' : 'start',
+        textAlign: isCenter ? 'center' : 'start',
         marginBottom: '0',
         fontSize: genFontSize(level),
       }}
