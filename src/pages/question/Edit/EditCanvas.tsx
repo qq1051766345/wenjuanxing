@@ -14,7 +14,7 @@ type PropsType = {
 
 // 动态获取组件
 export function getComponent(componentInfo: ComponentInfoType) {
-  const { type, props, title } = componentInfo;
+  const { type, props } = componentInfo;
   // 拿到对应组件的配置
   const componentConf = getComponentConfigByType(type);
   if (!componentConf) return null;

@@ -4,12 +4,10 @@ import { Typography } from 'antd';
 
 const { Paragraph } = Typography;
 const Component: FC<QuestionParagraphPropsType> = props => {
-  const { text: defaultText, isCenter: defaultCenter } = QuestionParagraphDefaultProps;
-  const { text = defaultText, isCenter = defaultCenter } = props;
+  const { text, isCenter } = { ...QuestionParagraphDefaultProps, ...props };
 
   const textList = useMemo(() => {
     const textList = text!.split('\n');
-    console.log(textList, '12312');
     return textList;
   }, [text]);
 

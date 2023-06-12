@@ -42,7 +42,6 @@ export default function useBindCanvasKeyPress() {
   useKeyPress(['uparrow'], () => {
     // 判断activeElement是否合法
     if (!isActiveElementValid()) return;
-    console.log(123);
     dispatch(selectLastComponent('up'));
   });
 

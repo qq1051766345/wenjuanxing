@@ -4,7 +4,6 @@ import {
   ComponentPropType,
   getComponentConfigByType,
 } from '../../../components/QuestionComponents';
-import { QuestionTitlePropsType } from '../../../components/QuestionComponents/QuestionTitle';
 import { useDispatch } from 'react-redux';
 import { changeComponentProp } from '../../../store/componentsReducer';
 

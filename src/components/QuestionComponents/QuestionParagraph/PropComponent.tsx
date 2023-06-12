@@ -1,17 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import { QuestionParagraphDefaultProps, QuestionParagraphPropsType } from './interface';
-import { Checkbox, Form, Input } from 'antd';
+import { Checkbox, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
 
 const PropComponent: FC<QuestionParagraphPropsType> = props => {
   const [form] = useForm();
-  const {
-    text = '一行文本',
-    isCenter = false,
-    disabled,
-    onChange,
-  } = { ...props, ...QuestionParagraphDefaultProps };
+  const { text, isCenter, disabled, onChange } = { ...QuestionParagraphDefaultProps, ...props };
+  console.log(text, 12312);
   useEffect(() => {
     form.setFieldsValue({ text, isCenter });
   }, [text, isCenter]);
