@@ -26,7 +26,7 @@ const getComponent = (c: ComponentConfigType) => {
   };
 
   return (
-    <div key={title} className={styles.wrapper} onClick={handleClick}>
+    <div key={type} className={styles.wrapper} onClick={handleClick}>
       <div className={styles.component}>
         <Component></Component>
       </div>

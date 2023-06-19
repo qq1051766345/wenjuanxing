@@ -137,6 +137,31 @@ export const componentsSlice = createSlice({
       }
     }),
 
+    //修改组件标题
+    changeComponentTitle: produce((draft: ComponentStateType, action: PayloadAction<string>) => {
+      const selectComponent = draft.componentList.find(c => c.fe_id === draft.selectedId);
+      if (!selectComponent) return;
+      selectComponent.title = action.payload;
+    }),
+
+    // 图层修改隐藏状态
+    changComponentHidden: produce((draft: ComponentStateType, action: PayloadAction<string>) => {
+      const id = action.payload;
+      const selectComponent = draft.componentList.find(c => c.fe_id === id);
+      if (!selectComponent) return;
+      const { isHidden } = selectComponent;
+      selectComponent.isHidden = !isHidden;
+    }),
+
+    // 图层修改锁定状态
+    changLockHidden: produce((draft: ComponentStateType, action: PayloadAction<string>) => {
+      const id = action.payload;
+      const selectComponent = draft.componentList.find(c => c.fe_id === id);
+      if (!selectComponent) return;
+      const { isLocked } = selectComponent;
+      selectComponent.isLocked = !isLocked;
+    }),
+
     // 修改selectedId
     // changeSelectedId(state: ComponentStateType, action: PayloadAction<string>) {
     //   state.selectedId = action.payload;
@@ -160,5 +185,8 @@ export const {
   copySelectedComponent,
   pasteComponent,
   selectLastComponent,
+  changeComponentTitle,
+  changComponentHidden,
+  changLockHidden,
 } = componentsSlice.actions;
 export default componentsSlice.reducer;

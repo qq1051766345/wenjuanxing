@@ -1,6 +1,3 @@
-import { useSelector } from 'react-redux';
-import type { StateType } from '../store';
-import { UserStateType } from '../store/userReducer';
 import { getUserInfo } from '../utils/user-token';
 
 const useGetUserInfo = () => {

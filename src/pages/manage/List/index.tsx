@@ -66,7 +66,7 @@ const List: FC = () => {
   // 触发加载函数
   const { run: tryLoadMore } = useDebounceFn(
     () => {
-      // 只有加载在视野内才能真正的加载
+      // !(重点学习)只有在视野内才能真正的加载
       const elem = containerRef.current;
       if (elem === null) return;
       const domRect = elem?.getBoundingClientRect();

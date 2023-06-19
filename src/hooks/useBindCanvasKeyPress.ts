@@ -10,7 +10,6 @@ import {
 function isActiveElementValid() {
   // 获取当前
   const activeElm = document.activeElement;
-  console.log(activeElm);
   if (activeElm == document.body) return true; //没有focus到input元素
   else false;
 }
