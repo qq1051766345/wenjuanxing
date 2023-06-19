@@ -1,3 +1,4 @@
+import { ComponentInfoType } from '../store/componentsReducer';
 import axios, { ResDataType, ResType } from './ajax';
 type search = {
   keyword: string;
@@ -6,6 +7,14 @@ type search = {
   isStar: boolean;
   isDeleted: boolean;
   inPublished: boolean;
+};
+
+type questionInfo = {
+  title: string;
+  desc: string;
+  js: string;
+  css: string;
+  componentList: ComponentInfoType[];
 };
 
 // 获取单个问卷信息
@@ -47,5 +56,15 @@ export async function duplicateQuestionService(id: string): Promise<ResDataType>
 export async function deleteQuestionService(ids: string[]): Promise<ResDataType> {
   const url = `/api/question/delete`;
   const data = (await axios.delete(url, { data: ids })) as ResDataType;
+  return data;
+}
+
+// 保存问卷
+export async function updateQuestionService(
+  id: string,
+  opt: Partial<questionInfo>
+): Promise<ResDataType> {
+  const url = `/api/question/${id}`;
+  const data = (await axios.patch(url, opt)) as ResDataType;
   return data;
 }

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import logo from '../components/Logo';
 import { getUserInfo } from '../utils/user-token';
 
 export type UserStateType = {

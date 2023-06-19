@@ -7,11 +7,14 @@ import {
   changLockHidden,
   changeComponentTitle,
   changeSelectedId,
+  sortComponent,
   toggleComponentHidden,
 } from '../../../store/componentsReducer';
 import styles from './Layer.module.scss';
 import classNames from 'classnames';
 import { EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
+import SortAbleContainer from '../../../components/DragSortable/SortAbleContainer';
+import SortAbleItem from '../../../components/DragSortable/SortAbleItem';
 
 const Layer: FC = () => {
   const { componentList, selectedId } = useGetComponentInfo();
@@ -53,8 +56,20 @@ const Layer: FC = () => {
     dispatch(changComponentHidden(fe_id));
   };
 
+  const componentListWithId = componentList.map(item => {
+    return {
+      ...item,
+      id: item.fe_id,
+    };
+  });
+  // 拖拽排序结束
+  const onDragEnd = (oldIndex: number, newIndex: number) => {
+    console.log(oldIndex, newIndex);
+    dispatch(sortComponent({ oldIndex, newIndex }));
+  };
+
   return (
-    <>
+    <SortAbleContainer items={componentListWithId} onDragEnd={onDragEnd}>
       {componentList.map(item => {
         const { fe_id, title, isHidden = false, isLocked } = item;
 
@@ -67,53 +82,55 @@ const Layer: FC = () => {
         });
 
         return (
-          <div className={styles.wrapper} key={fe_id}>
-            <div
-              className={titleClassName}
-              onClick={() => {
-                handleSelectComponent(fe_id);
-              }}
-            >
-              {fe_id === changingTitled && (
-                <Input
-                  value={title}
-                  onChange={handleChange}
-                  onPressEnter={() => setChangingTitled('')}
-                  onBlur={() => setChangingTitled('')}
-                ></Input>
-              )}
-              {fe_id !== changingTitled && title}
+          <SortAbleItem key={fe_id} id={fe_id}>
+            <div className={styles.wrapper}>
+              <div
+                className={titleClassName}
+                onClick={() => {
+                  handleSelectComponent(fe_id);
+                }}
+              >
+                {fe_id === changingTitled && (
+                  <Input
+                    value={title}
+                    onChange={handleChange}
+                    onPressEnter={() => setChangingTitled('')}
+                    onBlur={() => setChangingTitled('')}
+                  ></Input>
+                )}
+                {fe_id !== changingTitled && title}
+              </div>
+              <div className={styles.handler}>
+                <Space>
+                  <Tooltip title={isHidden ? '取消隐藏' : '隐藏'}>
+                    <Button
+                      size="small"
+                      shape="circle"
+                      className={!isHidden ? styles.btn : ''}
+                      type={isHidden ? 'primary' : 'text'}
+                      icon={<EyeInvisibleOutlined />}
+                      onClick={() => {
+                        changeHiddenHandle(fe_id);
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title={isLocked ? '取消锁定' : '锁定'}>
+                    <Button
+                      size="small"
+                      shape="circle"
+                      className={!isLocked ? styles.btn : ''}
+                      type={isLocked ? 'primary' : 'text'}
+                      icon={<LockOutlined />}
+                      onClick={() => dispatch(changLockHidden(fe_id))}
+                    />
+                  </Tooltip>
+                </Space>
+              </div>
             </div>
-            <div className={styles.handler}>
-              <Space>
-                <Tooltip title={isHidden ? '取消隐藏' : '隐藏'}>
-                  <Button
-                    size="small"
-                    shape="circle"
-                    className={!isHidden ? styles.btn : ''}
-                    type={isHidden ? 'primary' : 'text'}
-                    icon={<EyeInvisibleOutlined />}
-                    onClick={() => {
-                      changeHiddenHandle(fe_id);
-                    }}
-                  />
-                </Tooltip>
-                <Tooltip title={isLocked ? '取消锁定' : '锁定'}>
-                  <Button
-                    size="small"
-                    shape="circle"
-                    className={!isLocked ? styles.btn : ''}
-                    type={isLocked ? 'primary' : 'text'}
-                    icon={<LockOutlined />}
-                    onClick={() => dispatch(changLockHidden(fe_id))}
-                  />
-                </Tooltip>
-              </Space>
-            </div>
-          </div>
+          </SortAbleItem>
         );
       })}
-    </>
+    </SortAbleContainer>
   );
 };
 

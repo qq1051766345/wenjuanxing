@@ -3,7 +3,7 @@ import { ComponentPropType } from '../../components/QuestionComponents';
 import produce from 'immer';
 import { getNextSelectedId, insertNewComponent } from '../../utils/utils';
 import cloneDeep from 'lodash.clonedeep';
-import { inflateRawSync } from 'zlib';
+import { arrayMove } from '@dnd-kit/sortable';
 export type ComponentInfoType = {
   fe_id: string; //前端生成的id，mongodb不认
   type: string;
@@ -121,7 +121,7 @@ export const componentsSlice = createSlice({
       insertNewComponent(draft, copiedComponent);
     }),
 
-    // 选中上一个组件
+    // 选中上一个或者下一个
     selectLastComponent: produce((draft: ComponentStateType, action: PayloadAction<string>) => {
       const type = action.payload;
       const { selectedId, componentList } = draft;
@@ -162,6 +162,16 @@ export const componentsSlice = createSlice({
       selectComponent.isLocked = !isLocked;
     }),
 
+    sortComponent: produce(
+      (
+        draft: ComponentStateType,
+        action: PayloadAction<{ oldIndex: number; newIndex: number }>
+      ) => {
+        const { oldIndex, newIndex } = action.payload;
+        const { componentList } = draft;
+        draft.componentList = arrayMove(componentList, oldIndex, newIndex);
+      }
+    ),
     // 修改selectedId
     // changeSelectedId(state: ComponentStateType, action: PayloadAction<string>) {
     //   state.selectedId = action.payload;
@@ -188,5 +198,6 @@ export const {
   changeComponentTitle,
   changComponentHidden,
   changLockHidden,
+  sortComponent,
 } = componentsSlice.actions;
 export default componentsSlice.reducer;
