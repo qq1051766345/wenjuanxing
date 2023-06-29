@@ -24,7 +24,14 @@ const useLoadQuestionData = () => {
   //根据data设置redux store
   useEffect(() => {
     if (!data) return;
-    const { title = '', componentList = [], desc = '', css = '', js = '' } = data;
+    const {
+      title = '',
+      componentList = [],
+      desc = '',
+      css = '',
+      js = '',
+      isPublished = false,
+    } = data;
     // 存储到redux store中
     // 设置默认的selectedId
     let selectedId = '';
@@ -36,7 +43,7 @@ const useLoadQuestionData = () => {
     dispatch(reset({ componentList, selectedId, copiedComponent: null }));
 
     // 把pageInfo存储到redux store中
-    dispatch(resetPageInfo({ title, desc, css, js }));
+    dispatch(resetPageInfo({ title, desc, css, js, isPublished }));
   }, [data]);
 
   // 判断id变化，执行加载ajax数据

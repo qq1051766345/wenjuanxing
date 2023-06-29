@@ -2,3 +2,12 @@
 div[role="button"] {
   outline: 0;
 }
+
+.ant-tabs {
+  height: calc(100vh - 56px - 24px);
+}
+
+.ant-tabs-content-holder {
+  overflow: auto;
+  height: 100%;
+}
