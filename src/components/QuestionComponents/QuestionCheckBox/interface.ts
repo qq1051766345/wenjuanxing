@@ -21,3 +21,7 @@ export const QuestionCheckBoxDefaultProps: QuestionCheckBoxPropsType = {
     { value: 'item3', text: '选项3', checked: false },
   ],
 };
+
+export type QuestionCheckBoxStatType = {
+  stat: { name: string; count: number }[];
+};

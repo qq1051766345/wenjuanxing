@@ -2,8 +2,9 @@ import { useRequest } from 'ahooks';
 import React, { FC, useState } from 'react';
 import { getQuestionStatListService } from '../../../services/stat';
 import { useParams } from 'react-router-dom';
-import { Spin, Table, Typography } from 'antd';
+import { Pagination, Spin, Table, Typography } from 'antd';
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
+import { STAT_PAGE_SIZE } from '../../../constant';
 const { Title } = Typography;
 
 type PropsType = {
@@ -15,6 +16,8 @@ type PropsType = {
 const PageStat: FC<PropsType> = props => {
   const { selectComponentId, setSelectComponentId, setSelectComponentType } = props;
   const { id } = useParams();
+  const [page, setPage] = useState(1); //当前页码
+  const [pageSize, setPageSize] = useState(STAT_PAGE_SIZE); //每页条数
   const [total, setTotal] = useState(0);
   const [list, setList] = useState<Array<any>>([]);
   const { componentList } = useGetComponentInfo();
@@ -30,6 +33,8 @@ const PageStat: FC<PropsType> = props => {
         setTotal(total);
         setList(list);
       },
+      // 依赖于page和pageSize进行刷新
+      refreshDeps: [page, pageSize, id],
     }
   );
 
@@ -54,7 +59,22 @@ const PageStat: FC<PropsType> = props => {
   });
 
   const dataSource = list.map((i: any) => ({ ...i, key: i._id }));
-  const tableElm = <Table columns={columns} dataSource={dataSource} pagination={false}></Table>;
+  const tableElm = (
+    <>
+      <Table columns={columns} dataSource={dataSource} pagination={false}></Table>
+      <div style={{ textAlign: 'center', marginTop: '18px' }}></div>
+      <Pagination
+        total={total}
+        pageSize={pageSize}
+        current={page}
+        onChange={page => setPage(page)}
+        onShowSizeChange={(page, pageSize) => {
+          setPage(page);
+          setPageSize(pageSize);
+        }}
+      />
+    </>
+  );
 
   return (
     <div>
